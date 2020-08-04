@@ -16,6 +16,7 @@ router.post('/', verifyToken, async (req, res) => {
     const article = new Article({
         title: req.body.title,
         description: req.body.description,
+        body: req.body.body,
         author: req.body.author,
     });
     try {
@@ -28,7 +29,9 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.get('/:articleId', async (req, res) => {
     try {
-        const article = await Article.findById(req.params.articleId);
+        const article = await Article.findById(req.params.articleId).populate(
+            'comments'
+        );
         res.json(article);
     } catch (err) {
         res.json({ message: err });

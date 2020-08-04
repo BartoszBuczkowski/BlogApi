@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const ArticleSchema = mongoose.Schema({
+const ArticleSchema = Schema({
     title: {
         type: String,
         required: true,
@@ -18,19 +19,16 @@ const ArticleSchema = mongoose.Schema({
         default: Date.now,
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
-    avatar: {
-        type: String,
-    },
     comments: [
         {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Comment',
         },
     ],
 });
 
-module.exports = mongoose.model('Articles', ArticleSchema);
+module.exports = mongoose.model('Article', ArticleSchema);

@@ -1,18 +1,16 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const CommentSchema = mongoose.Schema({
+const CommentSchema = Schema({
     article: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Article',
         required: true,
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-    },
-    avatar: {
-        type: String,
     },
     date: {
         type: Date,
@@ -24,4 +22,4 @@ const CommentSchema = mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Comments', CommentSchema);
+module.exports = mongoose.model('Comment', CommentSchema);
