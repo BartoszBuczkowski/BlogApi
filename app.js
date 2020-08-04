@@ -14,7 +14,8 @@ app.use('/api/users', authRoute);
 app.use('/api/uploads', uploadsRoute);
 app.use('/api/articles', articlesRoute);
 
-app.use(express.static('./server/public'));
+const path = require('path');
+app.use(express.static(path.join(__dirname, '')));
 
 mongoose.connect(
     process.env.DB_CONNECTION,

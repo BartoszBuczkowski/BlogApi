@@ -5,27 +5,26 @@ const verifyToken = require('../auth/verifyToken');
 const User = require('../models/User');
 
 router.post('/avatar/:userId', verifyToken, async (req, res) => {
-    const { avatar } = req.body;
+    const avatar = req.body.avatar;
+
+    const name = Date.now();
 
     try {
-        const upload = await base64Img.img(
-            avatar,
-            './server/public',
-            Date.now(),
-            async (err, filepath) => {
-                const pathArr = filepath.split('/');
-                const fileName = pathArr[pathArr.length - 1];
+        base64Img.img(avatar, './public', name, (err, filepath) => {
+            const pathArr = filepath.split('/');
+            const fileName = pathArr[pathArr.length - 1];
+            return console.log(fileName);
+        });
 
-                const updatedUser = await User.findOneAndUpdate(
-                    req.params.userId,
-                    {
-                        $set: {
-                            avatar: `/${fileName}`,
-                        },
-                    }
-                );
+        const updatedUser = await User.updateOne(
+            { _id: req.params.userId },
+            {
+                $set: {
+                    avatar: `/public/${name}`,
+                },
             }
         );
+
         res.json({ success: 'User has been updated.' });
     } catch (err) {
         res.json({ message: err });
