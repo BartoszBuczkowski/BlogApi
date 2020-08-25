@@ -3,6 +3,7 @@ const router = express.Router();
 const verifyToken = require('../auth/verifyToken');
 const Comment = require('../models/Comment');
 const Article = require('../models/Article');
+const User = require('../models/User');
 
 router.post('/:articleId', verifyToken, async (req, res) => {
     const comment = new Comment({
@@ -14,6 +15,14 @@ router.post('/:articleId', verifyToken, async (req, res) => {
         const savedComment = await comment.save();
         const updateArticle = await Article.updateOne(
             { _id: req.params.articleId },
+            {
+                $push: {
+                    comments: `${savedComment._id}`,
+                },
+            }
+        );
+        const updateUser = await User.updateOne(
+            { _id: req.body.author },
             {
                 $push: {
                     comments: `${savedComment._id}`,

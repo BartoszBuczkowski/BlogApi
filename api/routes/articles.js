@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const verifyToken = require('../auth/verifyToken');
 const Article = require('../models/Article');
+const User = require('../models/User');
 
 router.get('/', async (req, res) => {
     try {
@@ -21,6 +22,14 @@ router.post('/', verifyToken, async (req, res) => {
     });
     try {
         const savedPost = await article.save();
+        const updateUser = await User.updateOne(
+            { _id: req.body.author },
+            {
+                $push: {
+                    articles: `${savedPost._id}`,
+                },
+            }
+        );
         res.json(savedPost);
     } catch (err) {
         res.json({ message: err });

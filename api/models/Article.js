@@ -18,6 +18,10 @@ const ArticleSchema = Schema({
         type: Date,
         default: Date.now,
     },
+    card: {
+        type: String,
+        required: true,
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User',

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const UserSchema = mongoose.Schema({
+const UserSchema = Schema({
     name: {
         type: String,
         required: true,
@@ -27,6 +28,25 @@ const UserSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    confirmed: {
+        type: Boolean,
+        default: false,
+    },
+    emailCodeVerify: {
+        type: String,
+    },
+    articles: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Article',
+        },
+    ],
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment',
+        },
+    ],
 });
 
 module.exports = mongoose.model('Users', UserSchema);
